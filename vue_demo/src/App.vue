@@ -1,7 +1,8 @@
 <template>
   <div id="app">
 
-    <Menu v-bind:items='mitems' v-bind:website='website' v-bind:add='madd'></Menu>
+    <!-- <Menu v-bind:items='mitems' v-bind:website='website' v-bind:add='madd'></Menu> -->
+    <Menu v-bind:items='mitems' v-bind:website='website' v-on:add='madd'></Menu>
   </div>
 
 </template>

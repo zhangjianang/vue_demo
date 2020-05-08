@@ -17,7 +17,7 @@
 <script>
   export default{
     name:'Menu',
-    props:['items','website','add'],
+    props:['items','website'],
     data(){
       return {
         content:''
@@ -37,7 +37,8 @@
         let index = this.items.length
         pi.id=index+1
         pi.name=this.content
-        this.add(pi)
+        // this.add(pi)
+        this.$emit('add',pi)
         this.content = ''
       }
     }
