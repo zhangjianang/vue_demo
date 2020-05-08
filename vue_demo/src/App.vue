@@ -1,14 +1,36 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+
+    <Menu v-bind:items='mitems' v-bind:website='website' v-bind:add='madd'></Menu>
   </div>
+
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+
+  import Menu from './components/Menu'
+  export default {
+    name: 'App',
+    data () {
+      return {
+       mitems:[
+        {id:1,name:'lili'},
+        {id:2,name:'小王'},
+        {id:2,name:'小李'}
+      ],
+      website:'http://www.baidu.com'
+      }
+    },
+    methods:{
+      madd(menu){
+        console.log('我是外层')
+      }
+    },
+    components:{
+      //组件映射
+      Menu:Menu
+    }
+  }
 </script>
 
 <style>
