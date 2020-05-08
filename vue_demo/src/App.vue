@@ -16,13 +16,14 @@
        mitems:[
         {id:1,name:'lili'},
         {id:2,name:'小王'},
-        {id:2,name:'小李'}
+        {id:3,name:'小李'}
       ],
       website:'http://www.baidu.com'
       }
     },
     methods:{
-      madd(menu){
+      madd(item){
+        this.mitems.push(item)
         console.log('我是外层')
       }
     },
