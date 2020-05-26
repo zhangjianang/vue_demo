@@ -40,16 +40,25 @@
         console.log('监听过来的--'+msg)
         this.mitems.push(data)
       })
-      // let url = "https://www.baidu.com/"
-      // axios.get(url).then(response=>{
+      let url = "http://127.0.0.1/br-base-rest/kpi/get/year"
+      axios.get(url).then(response=>{
 
-      //  console.log(response)
 
-      // }).catch(error=>{
+       for(let per in response.data){
+         let peradd={
+           "id":response.data[per].value,
+           "name":response.data[per].name
+         }
+         console.log(peradd)
+         this.mitems.push(peradd)
+       }
 
-      //  alert('error')
-      //  console.log(error)
-      // })
+
+      }).catch(error=>{
+
+       alert('error')
+       console.log(error)
+      })
     },
     methods:{
       madd(item){
