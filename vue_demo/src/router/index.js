@@ -5,7 +5,11 @@ import SubRute from '../components/SubRute.vue'
 import SubRute2 from '../components/SubRute2.vue'
 import Sub2Sub1 from '../components/Sub2Sub1.vue'
 import Sub2Sub2 from '../components/Sub2Sub2.vue'
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Router)
+Vue.use(ElementUI)
 
 export default new Router({
   routes: [

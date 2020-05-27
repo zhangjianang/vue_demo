@@ -13,6 +13,13 @@
       <li><router-link to="/rute2">首页显示子菜单2</router-link></li>
     </ul>
     <router-view></router-view>
+    <hr/>
+    <el-container>
+      <el-header>Header</el-header>
+      <el-aside width="200px">Aside</el-aside>
+      <el-main>Main</el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
   </div>
 
 </template>
@@ -76,11 +83,31 @@
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+ /* font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 60px; */
 }
+
+  .el-header, .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+  }
+   .el-main {
+      background-color: #E9EEF3;
+      color: #333;
+      text-align: center;
+      line-height: 160px;
+    }
 </style>
