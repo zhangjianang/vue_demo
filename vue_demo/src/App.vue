@@ -5,8 +5,7 @@
     <!-- 这是监听事件方式 -->
     <!-- <Menu v-bind:items='mitems' v-bind:website='website' v-on:add='madd'></Menu> -->
     <!-- 采用注册传递父子,没有事件了-->
-    <Menu v-bind:items='mitems' v-bind:website='website' ></Menu>
-    <Foot>这里是{{footinfo}}</Foot>
+
     <br />
     <ul>
       <li><router-link to="/rute">首页显示子菜单</router-link></li>
@@ -15,9 +14,30 @@
     <router-view></router-view>
     <hr/>
     <el-container>
-      <el-header>Header</el-header>
-      <el-aside width="200px">Aside</el-aside>
-      <el-main>Main</el-main>
+      <el-header>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">我的工作台</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-submenu index="2-4">
+              <template slot="title">选项4</template>
+              <el-menu-item index="2-4-1">选项1</el-menu-item>
+              <el-menu-item index="2-4-2">选项2</el-menu-item>
+              <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="3" disabled>消息中心</el-menu-item>
+          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+        </el-menu>
+      </el-header>
+     
+      <el-main>
+        <Menu v-bind:items='mitems' v-bind:website='website' ></Menu>
+        <Foot>这里是{{footinfo}}</Foot>
+    </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
   </div>
@@ -39,7 +59,9 @@
         {id:3,name:'小李'}
       ],
       website:'http://www.baidu.com',
-      footinfo:'我是app层的信息'
+      footinfo:'我是app层的信息',
+      activeIndex: '1',
+      activeIndex2: '1'
       }
     },
     mounted(){
@@ -71,7 +93,10 @@
       madd(item){
         this.mitems.push(item)
         console.log('我是外层')
-      }
+      },
+       handleSelect(key, keyPath) {
+              console.log(key, keyPath);
+            }
     },
     components:{
       //自己定义的，得组件映射
@@ -107,7 +132,7 @@
    .el-main {
       background-color: #E9EEF3;
       color: #333;
-      text-align: center;
+      text-align: left;
       line-height: 160px;
     }
 </style>
