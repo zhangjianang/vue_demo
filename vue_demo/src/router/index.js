@@ -5,6 +5,7 @@ import SubRute from '../components/SubRute.vue'
 import SubRute2 from '../components/SubRute2.vue'
 import Sub2Sub1 from '../components/Sub2Sub1.vue'
 import Sub2Sub2 from '../components/Sub2Sub2.vue'
+import MenuOverload from '../components/MenuOverload.vue'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -38,6 +39,11 @@ export default new Router({
           component: Sub2Sub2,
         }
       ]
+    },
+    {
+      path: '/menuoverload',
+      name: 'MenuOverload',
+      component: MenuOverload
     }
   ]
 })
