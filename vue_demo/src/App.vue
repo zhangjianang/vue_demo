@@ -2,12 +2,12 @@
   <div id="app">
     <el-container>
       <el-header>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="用户管理" name="/rute">用户管理</el-tab-pane>
             <el-tab-pane label="配置管理" name="/rute2">配置管理</el-tab-pane>
             <el-tab-pane label="复用menulabel" name="/menuoverload">复用menu</el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-          </el-tabs>
+            <el-tab-pane label="表格" name="/table"></el-tab-pane>
+        </el-tabs>
       </el-header>
 
       <el-main>
@@ -39,7 +39,7 @@
     methods:{
        handleClick(tab, event) {
          this.$router.replace(tab.name)
-         console.log(tab, event);
+         // console.log(tab, event);
        }
     },
     components:{
@@ -76,5 +76,6 @@
       color: #333;
       text-align: left;
       line-height: 160px;
+      height: 800px;
     }
 </style>
