@@ -1,129 +1,106 @@
 <template>
   <div id='app'>
-    <el-table :data="groupList" v-loading="loading">
-        <el-table-column type="index" label="序号" align="center"></el-table-column>
-        <el-table-column prop="code" label="分组编码" align="center"></el-table-column>
-        <el-table-column prop="name" label="分组全称" align="center"></el-table-column>
-        <el-table-column prop="mark" label="备注" align="center"  :show-overflow-tooltip="true" :formatter="formatEmpty">
-        </el-table-column>
-        <el-table-column label="操作" align="center" width="250">
-          <template slot-scope="groupList">
-            <el-button
-              size="mini"
-              class="config-btn"
-              style="width:70px;"
-              @click.native.prevent="editGroup(groupList.$index, groupList)"
-            >编辑</el-button>
-            <el-button
-              class="blue-btn"
-              size="mini"
-              style="width:70px"
-              @click.native.prevent="deleteGroup(groupList.$index, groupList.row.id)"
-            >删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
 
 
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="page.total"
-          :page-size="page.limit"
-          @current-change="pageChange"
-        ></el-pagination>
-      </div>
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-tag type="info">集团类型</el-tag>
+        <el-form-item label="集团">
+          <el-select v-model="formInline.region" placeholder="集团">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
+
+
+
+     <hr/>
+    <el-table
+          :data="tableData"
+          style="width: 100%">
+          <el-table-column
+            prop="date"
+            label="日期"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="地址">
+          </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name:'Data',
     data() {
-      return {
-        tableData: [{
-                  index: 0,
-                  code:0,
-                  name: '王小虎',
-                  mark: '上海市普陀区金沙江路 1518 弄'
-                },{
-                  index: 1,
-                  code:1,
-                  name: '张建昂',
-                  mark: '北京市普陀区金沙江路 1518 弄'
-                }],
-       // 选中表格index
-        activeIndex: undefined,
-        groupList: [],
-        loading:false,
-         //分页参数 一页有n条 当前页  总数
-        page: {
-          limit: undefined,
-          p: undefined,
-          total: undefined
-        }
-      };
+     return {
+       formInline: {
+                 user: '',
+                 region: ''
+               },
+      options: [],
+       value: '',
+       tableData: [{
+         date: '2016-05-02',
+         name: '王小虎',
+         address: '上海市普陀区金沙江路 1518 弄'
+       }, {
+         date: '2016-05-04',
+         name: '王小虎',
+         address: '上海市普陀区金沙江路 1517 弄'
+       }, {
+         date: '2016-05-01',
+         name: '王小虎',
+         address: '上海市普陀区金沙江路 1519 弄'
+       }, {
+         date: '2016-05-03',
+         name: '王小虎',
+         address: '上海市普陀区金沙江路 1516 弄'
+       }]
+     }
+    },
+    mounted(){
+      let url = "http://127.0.0.1/br-base-rest/kpi/get/group"
+      axios.post(url, {
+          code: "05"
+      },{
+         timeout: 1000
+      }).then(response=>{
+
+       for(let per in response.data){
+         let peradd={
+           "value":response.data[per].value,
+           "name":response.data[per].name
+         }
+         console.log(peradd)
+         this.options.push(peradd)
+       }
+
+      }).catch(error=>{
+
+       alert('error')
+       console.log(error)
+      })
     },
     methods:{
-        //获取表格
-      getGroup(params) {
-        this.loading = true;
-          getGroupTable(params).then(response => {
-            this.groupList = response.data;
-             this.page = {
-              total: response.count,
-              limit: response.limit,
-              p: response.p
-            };
-            this.loading = false;
-          })
-          .catch(() => {
-            this.loading = false;
-          });
-      },
-        //分页
-      pageChange(val) {
-        console.log(this.queryParams)
-          this.queryParams.p = val;
-          this.getGroup();
-      },
-           // 编辑
-      editGroup(index, groupList) {
-        this.activeIndex = index;
-        //这样就不会共用同一个对象 避免对话框内容改变的时候遮罩下面跟着改变
-        this.editGroupInfo = Object.assign({}, groupList.row);
-        this.editGroupDialog = true;
-      },
-
-         // 删除
-      deleteGroup(index, id) {
-        this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            let params = {
-              id: id
-            };
-            deleteGroup(params, id).then(response => {
-              this.groupList.splice(index, 1);
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-            });
-          })
-          .catch(() => {});
-      },
-         //空数据转化为‘-’
-     formatMark(row) {
-        console.log(row);
-        return row.mark ? row.mark : "-";
-      },
-     formatEmpty(){
-      }
+       onSubmit() {
+              console.log('submit!');
+            }
     }
      
   }

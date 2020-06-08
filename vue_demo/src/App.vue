@@ -9,15 +9,16 @@
             <el-tab-pane label="表格" name="/table"></el-tab-pane>
         </el-tabs>
       </el-header>
-
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-
-      <el-footer>
-        <Foot>这里{{footinfo}}</Foot>
-      </el-footer>
-
+      <el-container>
+          <el-container>
+            <el-main>
+              <router-view></router-view>
+            </el-main>
+            <el-footer>
+              <Foot>这里{{footinfo}}</Foot>
+            </el-footer>
+          </el-container>
+      </el-container>
     </el-container>
   </div>
 
@@ -78,4 +79,16 @@
       line-height: 160px;
       height: 800px;
     }
+    body > .el-container {
+        margin-bottom: 40px;
+      }
+
+      .el-container:nth-child(5) .el-aside,
+      .el-container:nth-child(6) .el-aside {
+        line-height: 260px;
+      }
+
+      .el-container:nth-child(7) .el-aside {
+        line-height: 320px;
+      }
 </style>
