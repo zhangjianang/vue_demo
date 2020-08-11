@@ -3,9 +3,10 @@
 
 
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-tag type="info">集团类型</el-tag>
-        <el-form-item label="集团">
-          <el-select v-model="formInline.region" placeholder="集团">
+
+        <el-form-item >
+          <el-select v-model="formInline.group" placeholder="集团">
+            <el-option label="选择所有" value="all"></el-option>
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -26,18 +27,77 @@
           :data="tableData"
           style="width: 100%">
           <el-table-column
-            prop="date"
-            label="日期"
+            prop="schoolname"
+            label="学校名称"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="姓名"
+            prop="group"
+            label="集团类型"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="address"
-            label="地址">
+            prop="allcount"
+            label="总分">
+          </el-table-column>
+          <el-table-column
+            prop="tj_count"
+            label="特级教师人数">
+          </el-table-column>
+
+          <el-table-column
+            prop="gj_count"
+            label="高级教师人数">
+          </el-table-column>
+          <el-table-column
+            prop="zj_count"
+            label="中级教师人数">
+          </el-table-column>
+          <el-table-column
+            prop="cj_count"
+            label="初级教师人数">
+          </el-table-column>
+          <el-table-column
+            prop="gt_portion"
+            label="高特占比">
+          </el-table-column>
+          <el-table-column
+            prop="cj_portion"
+            label="初级占比">
+          </el-table-column>
+
+          <el-table-column
+            prop="allcount_same"
+            label="总人数同期">
+          </el-table-column>
+          <el-table-column
+            prop="tj_count_same"
+            label="特级教师同期">
+          </el-table-column>
+          <el-table-column
+            prop="gj_count_same"
+            label="高级同期">
+          </el-table-column>
+          <el-table-column
+            prop="zj_count_same"
+            label="中级同期">
+          </el-table-column>
+
+          <el-table-column
+            prop="cj_count_same"
+            label="初级同期">
+          </el-table-column>
+          <el-table-column
+            prop="gt_portion_same"
+            label="高特占比同期">
+          </el-table-column>
+          <el-table-column
+            prop="gt_diff"
+            label="高特差值">
+          </el-table-column>
+          <el-table-column
+            prop="gt_score"
+            label="高特得分">
           </el-table-column>
     </el-table>
   </div>
@@ -51,56 +111,53 @@
      return {
        formInline: {
                  user: '',
-                 region: ''
+                 group: ''
                },
       options: [],
        value: '',
-       tableData: [{
-         date: '2016-05-02',
-         name: '王小虎',
-         address: '上海市普陀区金沙江路 1518 弄'
-       }, {
-         date: '2016-05-04',
-         name: '王小虎',
-         address: '上海市普陀区金沙江路 1517 弄'
-       }, {
-         date: '2016-05-01',
-         name: '王小虎',
-         address: '上海市普陀区金沙江路 1519 弄'
-       }, {
-         date: '2016-05-03',
-         name: '王小虎',
-         address: '上海市普陀区金沙江路 1516 弄'
-       }]
+       tableData: []
      }
     },
     mounted(){
       let url = "http://127.0.0.1/br-base-rest/kpi/get/group"
-      axios.post(url, {
-          code: "05"
-      },{
-         timeout: 1000
-      }).then(response=>{
-
-       for(let per in response.data){
-         let peradd={
-           "value":response.data[per].value,
-           "name":response.data[per].name
-         }
-         console.log(peradd)
-         this.options.push(peradd)
-       }
-
+      axios.post(url, {code: "05"},{timeout: 1000}).then(response=>{
+       response.data.forEach((item, index, arr) => {
+         this.options.push({"value":item.value,"name":item.name})
+       })
       }).catch(error=>{
-
-       alert('error')
        console.log(error)
       })
     },
     methods:{
        onSubmit() {
-              console.log('submit!');
-            }
+           let url = "http://127.0.0.1/br-base-rest/kpi/search/childSummary"
+           this.formInline.code="05";
+           console.log(this.formInline);
+           axios.post(url, this.formInline,{timeout: 1000}).then(response=>{
+            response.data.forEach((item, index, arr) => {
+              this.tableData.push({"schoolname":item.schoolname,
+              "group":item.group,
+              "allcount":item.allcount,
+              "tj_count":item.tj_count,
+              "gj_count":item.gj_count,
+              "zj_count":item.zj_count,
+              "cj_count":item.cj_count,
+              "gt_portion":item.gt_portion,
+              "cj_portion":item.cj_portion,
+              "allcount_same":item.allcount_same,
+              "tj_count_same":item.tj_count_same,
+              "gj_count_same":item.gj_count_same,
+              "zj_count_same":item.zj_count_same,
+              "cj_count_same":item.cj_count_same,
+              "gt_portion_same":item.gt_portion_same,
+              "gt_diff":item.gt_diff,
+              "gt_score":item.gt_score
+              })
+            })
+           }).catch(error=>{
+            console.log(error)
+           })
+       }
     }
      
   }

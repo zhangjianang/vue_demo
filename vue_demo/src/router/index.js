@@ -7,6 +7,8 @@ import Sub2Sub1 from '../components/Sub2Sub1.vue'
 import Sub2Sub2 from '../components/Sub2Sub2.vue'
 import MenuOverload from '../components/MenuOverload.vue'
 import Table from '../components/Table.vue'
+import Edittable from '../components/edit-table.vue'
+// import Edittable from '../components/edit-demo.vue'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -50,6 +52,11 @@ export default new Router({
       path: '/table',
       name: 'Table',
       component: Table
+    },
+    {
+      path: '/edittable',
+      name: 'Edittable',
+      component: Edittable
     }
   ]
 })
