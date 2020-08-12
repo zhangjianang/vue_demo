@@ -9,6 +9,7 @@ import MenuOverload from '../components/MenuOverload.vue'
 import Table from '../components/Table.vue'
 import Edittable from '../components/edit-table.vue'
 // import Edittable from '../components/edit-demo.vue'
+import DynamicInput from '../components/dynamic-input.vue'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -57,6 +58,11 @@ export default new Router({
       path: '/edittable',
       name: 'Edittable',
       component: Edittable
+    },
+    {
+      path: '/dynamicinput',
+      name: 'Dynamicinput',
+      component: DynamicInput
     }
   ]
 })

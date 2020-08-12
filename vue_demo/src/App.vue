@@ -8,6 +8,7 @@
             <el-tab-pane label="复用menulabel" name="/menuoverload">复用menu</el-tab-pane>
             <el-tab-pane label="表格" name="/table"></el-tab-pane>
             <el-tab-pane label="编辑表格" name="/edittable"></el-tab-pane>
+            <el-tab-pane label="输入sql" name="/dynamicinput"></el-tab-pane>
         </el-tabs>
       </el-header>
       <el-container>
