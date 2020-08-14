@@ -43,9 +43,14 @@
 
 <script>
   import axios from 'axios'
+  import { mapState, mapMutations,mapActions } from 'vuex'
   export default {
     name: "edit-table",
+    computed:{
+      ...mapState(['userList'])
+    },
     methods: {
+      ...mapActions(['fetchAll']),
       handleClick(row) {
         console.log(row);
         let url = "http://127.0.0.1:8099/user/del/"+row.id
@@ -64,22 +69,34 @@
         this.refreshData();
       },
       refreshData(){
-        let url = "http://127.0.0.1:8099/user/all"
-        axios.post(url, {}, {
-          timeout: 1000
-        }).then(response => {
-          response.data.forEach((item, index, arr) => {
-            this.tableData.push({
-              "address": item.address,
-              "name": item.name,
-              "id": item.id,
-              "gender": item.gender,
-              "date": item.date,
-              "state": item.state
-            })
-          })
-        }).catch(error => {
-          console.log(error)
+        // let url = "http://127.0.0.1:8099/user/all"
+        // axios.post(url, {}, {
+        //   timeout: 1000
+        // }).then(response => {
+        //   response.data.forEach((item, index, arr) => {
+        //     this.tableData.push({
+        //       "address": item.address,
+        //       "name": item.name,
+        //       "id": item.id,
+        //       "gender": item.gender,
+        //       "date": item.date,
+        //       "state": item.state
+        //     })
+        //   })
+        // }).catch(error => {
+        //   console.log(error)
+        // })
+       this.fetchAll()
+       console.log(this.userList)
+       this.userList.data.forEach((item,index,arr)=>{
+          this.tableData.push({
+                "address": item.address,
+                "name": item.name,
+                "id": item.id,
+                "gender": item.gender,
+                "date": item.date,
+                "state": item.state
+              })
         })
       }
     },
@@ -94,7 +111,8 @@
       }
     },
     mounted() {
-      this.refreshData()
+      let { fetchAll } = this
+      fetchAll()
     }
   }
 </script>

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const origin = http://localhost:8099
+const origin = 'http://127.0.0.1:8099'
 const VUE_APP_BASE_API = `${origin}/user`
 
 
@@ -14,7 +14,7 @@ export function addUser(data) {
 
 export function fetchAll() {
   return axios({
-    url: '/all',
+    url: VUE_APP_BASE_API+'/all',
     method: 'post'
   })
 }
