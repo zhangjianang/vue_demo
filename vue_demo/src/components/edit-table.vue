@@ -112,7 +112,7 @@
     },
     mounted() {
       let { fetchAll } = this
-      fetchAll()
+      this.refreshData()
     }
   }
 </script>
