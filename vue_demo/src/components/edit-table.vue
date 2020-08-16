@@ -87,17 +87,7 @@
         //   console.log(error)
         // })
        this.fetchAll()
-       console.log(this.userList)
-       this.userList.data.forEach((item,index,arr)=>{
-          this.tableData.push({
-                "address": item.address,
-                "name": item.name,
-                "id": item.id,
-                "gender": item.gender,
-                "date": item.date,
-                "state": item.state
-              })
-        })
+       
       }
     },
     data() {
@@ -113,6 +103,21 @@
     mounted() {
       let { fetchAll } = this
       this.refreshData()
+    },
+    watch:{
+      userList:function(val){
+        console.log(this.userList)
+        this.userList.data.forEach((item,index,arr)=>{
+           this.tableData.push({
+                 "address": item.address,
+                 "name": item.name,
+                 "id": item.id,
+                 "gender": item.gender,
+                 "date": item.date,
+                 "state": item.state
+               })
+         })
+      }
     }
   }
 </script>
