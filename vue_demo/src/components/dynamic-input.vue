@@ -48,89 +48,88 @@
     </el-form-item>
 
     </el-form>
-    
+
     <el-input v-model="mystore" placeholder="store内容"></el-input>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
-  export default {
-    name: "dynamic",
-    data() {
-      return {
-        dimensionForm: {
-          dimensions: [{
-            value: ''
-          }],
-          dimension: {value:''}
-        },
-        measureForm: {
-          measures: [{
-            value: ''
-          }],
-          measure: {value:''}
-        },
-        searchForm:{
+import axios from 'axios'
+export default {
+  name: 'dynamic',
+  data () {
+    return {
+      dimensionForm: {
+        dimensions: [{
+          value: ''
+        }],
+        dimension: {value: ''}
+      },
+      measureForm: {
+        measures: [{
+          value: ''
+        }],
+        measure: {value: ''}
+      },
+      searchForm: {
 
-        },
-        info:"",
-        mystore:this.$store.state.count
-      };
+      },
+      info: '',
+      mystore: this.$store.state.count
+    }
+  },
+  methods: {
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let ms = []
+          ms.push(this.measureForm.measure)
+          ms = ms.concat(this.measureForm.measures)
+          let dims = []
+          dims.push(this.dimensionForm.dimension)
+          dims = dims.concat(this.dimensionForm.dimensions)
+          let info = {'measure': ms, 'dimension': dims}
+          let url = 'http://127.0.0.1:8099/query/info'
+          axios.post(url, info, {
+            timeout: 1000
+          }).then(response => {
+            this.info = response.data.data
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-            let ms = [];
-            ms.push(this.measureForm.measure);
-            ms = ms.concat(this.measureForm.measures);
-            let dims=[];
-            dims.push(this.dimensionForm.dimension);
-            dims = dims.concat(this.dimensionForm.dimensions);
-            let info = {"measure":ms,"dimension":dims}
-            let url = "http://127.0.0.1:8099/query/info"
-            axios.post(url, info, {
-              timeout: 1000
-            }).then(response => {
-              this.info=response.data.data;
-            })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      removeDomain(item) {
-        var index = this.dimensionForm.dimensions.indexOf(item)
-        if (index !== -1) {
-          this.dimensionForm.dimensions.splice(index, 1)
-        }
-      },
-      addDomain() {
-        this.dimensionForm.dimensions.push({
-          value: '',
-          key: Date.now()
-        });
-      },
-      addMeasure() {
-        this.measureForm.measures.push({
-          value: '',
-          key: Date.now()
-        });
-      },
-      removeMeasure(item) {
-        var index = this.measureForm.measures.indexOf(item)
-        if (index !== -1) {
-          this.measureForm.measures.splice(index, 1)
-        }
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    removeDomain (item) {
+      var index = this.dimensionForm.dimensions.indexOf(item)
+      if (index !== -1) {
+        this.dimensionForm.dimensions.splice(index, 1)
+      }
+    },
+    addDomain () {
+      this.dimensionForm.dimensions.push({
+        value: '',
+        key: Date.now()
+      })
+    },
+    addMeasure () {
+      this.measureForm.measures.push({
+        value: '',
+        key: Date.now()
+      })
+    },
+    removeMeasure (item) {
+      var index = this.measureForm.measures.indexOf(item)
+      if (index !== -1) {
+        this.measureForm.measures.splice(index, 1)
       }
     }
   }
+}
 </script>
 
 <style>

@@ -10,9 +10,11 @@ import Table from '../components/Table.vue'
 import Edittable from '../components/edit-table.vue'
 import DynamicInput from '../components/dynamic-input.vue'
 import MyStore from '../components/my-store.vue'
+import MyDrag from '../components/my-drag.vue'
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
 Vue.use(Router)
 Vue.use(ElementUI)
 
@@ -20,7 +22,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/rute'
+      redirect: '/rute'
     },
     {
       path: '/rute',
@@ -31,7 +33,7 @@ export default new Router({
       path: '/rute2',
       name: 'SubRute2',
       component: SubRute2,
-      children:[
+      children: [
         {
           path: '/sub2/sub1',
           name: 'Sub2Sub1',
@@ -68,6 +70,11 @@ export default new Router({
       path: '/mystore',
       name: 'MyStore',
       component: MyStore
+    },
+    {
+      path: '/mydrag',
+      name: 'MyDrag',
+      component: MyDrag
     }
   ]
 })
