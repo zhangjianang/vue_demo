@@ -25,3 +25,10 @@ export function delUser (data) {
     data
   })
 }
+
+export function selectMeasure () {
+  return axios({
+    url: VUE_APP_BASE_API + '/measure',
+    method: 'post'
+  })
+}

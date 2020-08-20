@@ -42,49 +42,47 @@
 </template>
 
 <script>
-  // eslint-disable-next-line no-unused-vars
-  import axios from 'axios'
-  import {mapState, mapMutations, mapActions} from 'vuex'
-  export default {
-    name: 'edit-table',
-    computed: {
-      ...mapState(['userList'])
+
+import {mapState, mapMutations, mapActions} from 'vuex'
+export default {
+  name: 'edit-table',
+  computed: {
+    ...mapState(['userList'])
+  },
+  methods: {
+    ...mapActions(['fetchAll']),
+    ...mapMutations(['ADD_USER', 'DEL_USER']),
+    handleClick (row) {
+      this.DEL_USER(row)
     },
-    methods: {
-      ...mapActions(['fetchAll']),
-      ...mapMutations(['ADD_USER', 'DEL_USER']),
-      handleClick (row) {
-        this.DEL_USER(row)
-      },
-      onSubmit () {
-        this.ADD_USER(this.formInline)
-      },
-      refreshData () {
-        this.fetchAll()
-      }
+    onSubmit () {
+      this.ADD_USER(this.formInline)
     },
-    data () {
-      return {
-        tableData: [],
-        formInline: {
-          name: '',
-          gender: '',
-          address: ''
-        }
-      }
-    },
-    mounted () {
-      let {fetchAll} = this
-      this.refreshData()
-    },
-    watch: {
-      userList: function (val) {
-        console.log('val：' + val)
-        console.log('userlist:' + this.userList)
-        this.tableData = this.userList.data
+    refreshData () {
+      this.fetchAll()
+    }
+  },
+  data () {
+    return {
+      tableData: [],
+      formInline: {
+        name: '',
+        gender: '',
+        address: ''
       }
     }
+  },
+  mounted () {
+    this.refreshData()
+  },
+  watch: {
+    userList: function (val) {
+      console.log('val：' + val)
+      console.log('userlist:' + this.userList)
+      this.tableData = this.userList.data
+    }
   }
+}
 </script>
 
 <style>

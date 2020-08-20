@@ -6,16 +6,18 @@ import {
   fetchAll,
   delUser
 } from '@/api/api'
+import {selectMeasure} from './api/api'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     count: 0,
-    userList: []
+    userList: [],
+    measureList: []
   },
   getters: {
-    getCount (State) {
+    getCount (state) {
       return state.count
     }
   },
@@ -31,12 +33,19 @@ export default new Vuex.Store({
     },
     DEL_USER (state, val) {
       delUser(val)
+    },
+    SET_MEASURELIST (state, val) {
+      state.measureList = val
     }
   },
   actions: {
     async fetchAll ({commit}) {
       let userlist = await fetchAll()
       commit('SET_USERLIST', userlist)
+    },
+    async selectMeasure ({commit}) {
+      let res = await selectMeasure()
+      commit('SET_MEASURELIST', res.data)
     }
   }
 })
