@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="操作" width="130">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="handleClick(scope.row,scope.$index)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -47,16 +47,25 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
   name: 'edit-table',
   computed: {
-    ...mapState(['userList'])
+    ...mapState(['userList']),
+    tableData:{
+      get () {
+        return this.userList.data
+      }
+    }
   },
   methods: {
     ...mapActions(['fetchAll']),
     ...mapMutations(['ADD_USER', 'DEL_USER']),
-    handleClick (row) {
+    handleClick (row,index) {
       this.DEL_USER(row)
+      this.tableData.splice(index,1)
     },
     onSubmit () {
       this.ADD_USER(this.formInline)
+      let info =Object.create( this.formInline)
+      this.formInline = {}
+      this.tableData.push(info)
     },
     refreshData () {
       this.fetchAll()
@@ -64,7 +73,6 @@ export default {
   },
   data () {
     return {
-      tableData: [],
       formInline: {
         name: '',
         gender: '',
@@ -76,11 +84,11 @@ export default {
     this.refreshData()
   },
   watch: {
-    userList: function (val) {
-      console.log('val：' + val)
-      console.log('userlist:' + this.userList)
-      this.tableData = this.userList.data
-    }
+    // userList: function (val) {
+    //   console.log('val：' + val)
+    //   console.log('userlist:' + this.userList)
+    //   this.tableData = this.userList.data
+    // }
   }
 }
 </script>

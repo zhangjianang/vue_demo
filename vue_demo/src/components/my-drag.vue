@@ -51,14 +51,48 @@
 <!--      <pre>{{list2String}}</pre>-->
 <!--    </div>-->
     <hr/>
-    <div class ='measure'>
-      <el-card class="box-card">
-        <draggable element="div" v-model="useList">
-          <div  v-for="item in useList" class="text item">{{item.measureName}}</div>
+
+
+
+
+            <draggable element="span" v-model="useList" v-bind="dragOptions" :move="onMove">
+
+              <el-button v-for="item in useList" :key="item.id">{{item.measureName}} </el-button>
+
+            </draggable>
+    <hr/>
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-tag type="info">维度行</el-tag>
+        <draggable v-model="useList2" :options="{ group: 'description' }" @start="drag = true" @end="drag = false">
+
+          <el-button
+              v-for="(item, index) in useList2"
+              :key="index"
+              round
+              size="mini"
+              type="primary"
+            >
+            {{ item.measureName }}
+          </el-button>
         </draggable>
-      </el-card>
-    </div>
-<!--    <input type="text">{{measureList}} </input>-->
+      </el-col>
+      <el-col :span="6">
+        <el-tag type="info">维度列</el-tag>
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-tag type="info">指标</el-tag>
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+      <el-col :span="6">
+        <el-tag type="info">筛选</el-tag>
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -90,7 +124,8 @@ export default {
       list2: [],
       editable: true,
       isDragging: false,
-      delayedDragging: false
+      delayedDragging: false,
+      useList2:[{"measureName":"ang"}]
     }
   },
   created () {
@@ -113,6 +148,9 @@ export default {
       return (
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       )
+    },
+    mydrop(val){
+      this.useList2.push(val)
     }
   },
 
