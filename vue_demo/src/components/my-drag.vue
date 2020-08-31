@@ -43,23 +43,30 @@
       </div>
     </div>
 
-<!--    <div class="list-group col-md-4">-->
-<!--      <pre>{{listString}}</pre>-->
-<!--    </div>-->
-<!--    <h1>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;分割线-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</h1>-->
-<!--    <div class="list-group col-md-4">-->
-<!--      <pre>{{list2String}}</pre>-->
-<!--    </div>-->
+    <!--    <div class="list-group col-md-4">-->
+    <!--      <pre>{{listString}}</pre>-->
+    <!--    </div>-->
+    <!--    <h1>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;分割线-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</h1>-->
+    <!--    <div class="list-group col-md-4">-->
+    <!--      <pre>{{list2String}}</pre>-->
+    <!--    </div>-->
     <hr/>
 
 
+    <draggable element="span" v-model="useList" v-bind="dragOptions" :move="onMove">
 
+      <el-button v-for="item in useList" :key="item.id">{{item.measureName}}</el-button>
 
-            <draggable element="span" v-model="useList" v-bind="dragOptions" :move="onMove">
+    </draggable>
 
-              <el-button v-for="item in useList" :key="item.id">{{item.measureName}} </el-button>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :page-count="totalPage"
+      @current-change = "myCurrentChange"
+    >
 
-            </draggable>
+    </el-pagination>
     <hr/>
     <el-row :gutter="20">
       <el-col :span="6">
@@ -67,12 +74,12 @@
         <draggable v-model="useList2" :options="{ group: 'description' }" @start="drag = true" @end="drag = false">
 
           <el-button
-              v-for="(item, index) in useList2"
-              :key="index"
-              round
-              size="mini"
-              type="primary"
-            >
+            v-for="(item, index) in useList2"
+            :key="index"
+            round
+            size="mini"
+            type="primary"
+          >
             {{ item.measureName }}
           </el-button>
         </draggable>
@@ -97,105 +104,113 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import {mapState, mapMutations, mapActions} from 'vuex'
+  import draggable from 'vuedraggable'
+  import {mapState,mapGetters, mapMutations, mapActions} from 'vuex'
 
-const message = [
-  'vue.draggable',
-  'draggable',
-  'component',
-  'for',
-  'vue.js 2.0',
-  'based',
-  'on',
-  'Sortablejs'
-]
-export default {
-  name: 'MyDrag',
-  data () {
-    return {
-      list: message.map((name, index) => {
-        return {
-          name,
-          order: index + 1,
-          fixed: false
-        }
-      }),
-      list2: [],
-      editable: true,
-      isDragging: false,
-      delayedDragging: false,
-      useList2:[{"measureName":"ang"}]
-    }
-  },
-  created () {
-    this.selectMeasure()
-  },
-  methods: {
-    ...mapActions(['selectMeasure']),
-    ...mapMutations(['SET_MEASURELIST']),
-    orderList () {
-      this.list = this.list.sort((one, two) => {
-        return one.order - two.order
-      })
-    },
-    onMove ({
-      relatedContext,
-      draggedContext
-    }) {
-      const relatedElement = relatedContext.element
-      const draggedElement = draggedContext.element
-      return (
-        (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      )
-    },
-    mydrop(val){
-      this.useList2.push(val)
-    }
-  },
-
-  components: {
-    draggable
-  },
-
-  computed: {
-    ...mapState(['measureList']),
-    useList:{
-      get() {
-        return this.measureList
-      },
-      set(value) {
-        // this.$store.commit('SET_MEASURELIST', value)
-        this.SET_MEASURELIST(value)
-      }
-    },
-    dragOptions () {
+  const message = [
+    'vue.draggable',
+    'draggable',
+    'component',
+    'for',
+    'vue.js 2.0',
+    'based',
+    'on',
+    'Sortablejs'
+  ]
+  export default {
+    name: 'MyDrag',
+    data () {
       return {
-        animation: 0,
-        group: 'description',
-        disabled: !this.editable,
-        ghostClass: 'ghost'
+        list: message.map((name, index) => {
+          return {
+            name,
+            order: index + 1,
+            fixed: false
+          }
+        }),
+        list2: [],
+        editable: true,
+        isDragging: false,
+        delayedDragging: false,
+        useList2: [{'measureName': 'ang'}]
       }
     },
-    listString () {
-      return JSON.stringify(this.list, null, 2)
+    created () {
+      this.selectMeasure()
+      this.selectMPGnum()
     },
-    list2String () {
-      return JSON.stringify(this.list2, null, 2)
-    }
-  },
-  watch: {
-    isDragging (newValue) {
-      if (newValue) {
-        this.delayedDragging = true
-        return
+    methods: {
+      ...mapActions(['selectMeasure','selectMPGnum']),
+      ...mapMutations(['SET_MEASURELIST','SET_PAGGE_NUM']),
+      orderList () {
+        this.list = this.list.sort((one, two) => {
+          return one.order - two.order
+        })
+      },
+      onMove ({
+        relatedContext,
+        draggedContext
+      }) {
+        const relatedElement = relatedContext.element
+        const draggedElement = draggedContext.element
+        return (
+          (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+        )
+      },
+      mydrop (val) {
+        this.useList2.push(val)
+      },
+      myCurrentChange(val){
+        this.SET_PAGGE_NUM(val)
+        this.selectMeasure()
       }
-      this.$nextTick(() => {
-        this.delayedDragging = false
-      })
+    },
+
+    components: {
+      draggable
+    },
+
+    computed: {
+      ...mapState(['measureList','totalPage']),
+      ...mapGetters([
+        'totalPage'
+      ]),
+      useList: {
+        get () {
+          return this.measureList
+        },
+        set (value) {
+          // this.$store.commit('SET_MEASURELIST', value)
+          this.SET_MEASURELIST(value)
+        }
+      },
+      dragOptions () {
+        return {
+          animation: 0,
+          group: 'description',
+          disabled: !this.editable,
+          ghostClass: 'ghost'
+        }
+      },
+      listString () {
+        return JSON.stringify(this.list, null, 2)
+      },
+      list2String () {
+        return JSON.stringify(this.list2, null, 2)
+      }
+    },
+    watch: {
+      isDragging (newValue) {
+        if (newValue) {
+          this.delayedDragging = true
+          return
+        }
+        this.$nextTick(() => {
+          this.delayedDragging = false
+        })
+      }
     }
   }
-}
 </script>
 
 <style>
@@ -203,6 +218,7 @@ export default {
   .text {
     font-size: 14px;
   }
+
   .show {
     border: black;
     width: auto;

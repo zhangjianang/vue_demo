@@ -26,9 +26,17 @@ export function delUser (data) {
   })
 }
 
-export function selectMeasure () {
+export function selectMeasure (data) {
   return axios({
     url: VUE_APP_BASE_API + '/measure',
+    method: 'post',
+    data
+  })
+}
+
+export function selectMeasurePgNum () {
+  return axios({
+    url: VUE_APP_BASE_API + '/measurePageNum',
     method: 'post'
   })
 }
