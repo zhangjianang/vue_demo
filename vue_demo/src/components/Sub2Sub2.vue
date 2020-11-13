@@ -52,6 +52,7 @@
     return {
       loading: false,
       optionList: [],
+      formatList:[{name:'one',value:1},{name:'two',value:2}],
       tableColumn: [
         {field: 'id', title: 'ID'},
         {
@@ -85,8 +86,9 @@
         {
           field: 'formatType', title: '格式化类型',
           editRender: {
-            name: 'input',
-            attrs: {type: 'text'}
+            name: '$select',
+            options:this.formatList,
+            // attrs: {type: 'text'}
           }
         },
         {field: 'updateTime', title: '更新时间'},
