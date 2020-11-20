@@ -1,20 +1,32 @@
 <template>
 
-    <div class="data-model-table" v-loading="loading">
-      子菜单2的子菜单2
-      <vxe-grid
-        round
-        border
-        auto-resize
-        show-overflow
-        height="auto"
-        size="mini"
-        align="center"
-        :columns="tableColumn"
-        ref="xgrid2"
-        :edit-config="{trigger: 'manual', mode: 'row'}"
-        :data="optionList">
-      </vxe-grid>
+    <div class="data-all" v-loading="loading">
+      展示列
+      <div class="data-table">
+        <vxe-grid
+          round
+          border
+          auto-resize
+          show-overflow
+          height="auto"
+          size="mini"
+          align="center"
+          :columns="tableColumn"
+          ref="xgrid2"
+          :edit-config="{trigger: 'manual', mode: 'row'}"
+          :data="optionList">
+        </vxe-grid>
+      </div>
+      <div class="data-page">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          :current-page.sync="currentPage"
+          @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
 </template>
 
@@ -23,9 +35,8 @@
 
   export default {
   name: 'Sub2Sub1',
-    async created () {
-    let {code, data: {data}} = await getOptionField(-2)
-    this.optionList = data
+  created () {
+    this.search()
   },
   methods: {
     formatDataTime ({cellValue}) {
@@ -46,10 +57,21 @@
       updateOptionField(row).then(()=>{
         console.log("成功")
       })
+    },
+    handleCurrentChange() {
+      this.search()
+    },
+    async search(){
+      let {code, data: {data:{data,total}}} = await getOptionField({reportId:2,pageNum:this.currentPage,pageSize:this.pageSize})
+      this.optionList = data
+      this.total=total
     }
   },
   data () {
     return {
+      total: 0,
+      currentPage: 1,
+      pageSize:20,
       loading: false,
       optionList: [],
       formatList:[{name:'one',value:1},{name:'two',value:2}],
@@ -91,6 +113,20 @@
             // attrs: {type: 'text'}
           }
         },
+        {
+          field: 'orderNo', title: '筛选列顺序',
+          editRender: {
+            name: 'input',
+            attrs: {type: 'text'}
+          }
+        },
+        {
+          field: 'isDefaultVeiw', title: '是否默认呈现列',
+          editRender: {
+            name: 'input',
+            attrs: {type: 'text'}
+          }
+        },
         {field: 'updateTime', title: '更新时间'},
         {
           title: '操作',
@@ -115,5 +151,14 @@
     color: cadetblue;
     margin: 0 5px;
     cursor: pointer;
+  }
+  .data-all {
+    height: 100%;
+  }
+  .data-table {
+
+  }
+  .data-page {
+
   }
 </style>

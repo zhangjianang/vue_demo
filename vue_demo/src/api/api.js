@@ -62,11 +62,11 @@ export function setCommonFilter (data) {
 
 
 
-export function getCondField (reportId) {
+export function getCondField (params) {
   return axios({
-    url:REPORT_BASE+"/condField/list",
+    url:REPORT_BASE+"/condField/pagelist",
     method:'get',
-    params:{reportId}
+    params
   })
 }
 export function deleteCondField (id) {
@@ -84,11 +84,11 @@ export function updateCondField (data) {
   })
 }
 
-export function getOptionField (reportId) {
+export function getOptionField (params) {
   return axios({
-    url:REPORT_BASE+"/optionsField/list",
+    url:REPORT_BASE+"/optionsField/pagelist",
     method:'get',
-    params:{reportId}
+    params
   })
 }
 

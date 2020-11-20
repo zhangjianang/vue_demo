@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- <li><router-link to="/rute">首页显示子菜单</router-link></li> -->
-    子菜单2的子菜单1
-    <div class="data-model-table" v-loading="loading">
+    筛选项
+    <div class="data-table" v-loading="loading">
       <vxe-grid
         round
         border
@@ -17,7 +17,16 @@
         :data="tableList">
       </vxe-grid>
     </div>
-
+    <div class="data-page">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        :current-page.sync="currentPage"
+        @current-change="handleCurrentChange">
+      </el-pagination>
+    </div>
 
   </div>
 </template>
@@ -27,11 +36,18 @@
 
   export default {
     name: 'Sub2Sub1',
-    async created () {
-      let {code, data: {data}} = await getCondField(-2)
-      this.tableList = data
+    created () {
+      this.search()
     },
     methods: {
+      async search(){
+        let {code, data: {data:{data,total}}} = await getCondField({reportId:2,pageNum:this.currentPage,pageSize:this.pageSize})
+        this.tableList = data
+        this.total=total
+      },
+      handleCurrentChange(){
+        this.search()
+      },
       formatDataTime ({cellValue}) {
         if (!!cellValue) {
           return new Date(cellValue)
@@ -57,6 +73,9 @@
     },
     data () {
       return {
+        total: 0,
+        currentPage: 1,
+        pageSize:20,
         loading: false,
         tableList: [],
         tableColumn: [
@@ -103,7 +122,27 @@
               attrs: {type: 'text'}
             }
           },
-          {field: 'symboliSet', title: '可选操作符'},
+          {
+            field: 'symboliSet', title: '可选操作符',
+            editRender: {
+              name: 'input',
+              attrs: {type: 'text'}
+            }
+          },
+          {
+            field: 'isDefaultVeiw', title: '默认筛选列',
+            editRender: {
+              name: 'input',
+              attrs: {type: 'text'}
+            }
+          },
+          {
+            field: 'orderNo', title: '筛选列顺序',
+            editRender: {
+              name: 'input',
+              attrs: {type: 'text'}
+            }
+          },
           {field: 'updateTime', title: '更新时间'},
           {
             title: '操作',
