@@ -1,7 +1,6 @@
 <template>
 
     <div class="data-all" v-loading="loading">
-      展示列
       <div class="data-table">
         <vxe-grid
           round
@@ -152,12 +151,10 @@
     margin: 0 5px;
     cursor: pointer;
   }
-  .data-all {
-    height: 100%;
+  .data-all  .data-table  {
+    height: 650px;
   }
-  .data-table {
 
-  }
   .data-page {
 
   }

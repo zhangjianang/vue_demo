@@ -11,7 +11,7 @@ import Edittable from '../components/edit-table.vue'
 import DynamicInput from '../components/dynamic-input.vue'
 import MyStore from '../components/my-store.vue'
 import MyDrag from '../components/my-drag.vue'
-
+import mytable from '../components/MyTable'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -23,6 +23,11 @@ export default new Router({
     {
       path: '/',
       redirect: '/rute'
+    },
+    {
+      path: '/mytable',
+      name: 'mytable',
+      component: mytable
     },
     {
       path: '/rute',

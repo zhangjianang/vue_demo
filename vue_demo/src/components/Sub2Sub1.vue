@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="view-all">
     <!-- <li><router-link to="/rute">首页显示子菜单</router-link></li> -->
-    筛选项
     <div class="data-table" v-loading="loading">
       <vxe-grid
         round
@@ -167,5 +166,8 @@
     color: cadetblue;
     margin: 0 5px;
     cursor: pointer;
+  }
+  .view-all .data-table{
+    height: 650px;
   }
 </style>

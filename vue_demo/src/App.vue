@@ -5,6 +5,7 @@
         <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="/rute">用户管理</el-tab-pane>
           <el-tab-pane label="配置管理" name="/rute2">配置管理</el-tab-pane>
+          <el-tab-pane label="我的展示" name="/mytable">我的展示</el-tab-pane>
           <el-tab-pane label="复用menulabel" name="/menuoverload">复用menu</el-tab-pane>
           <el-tab-pane label="表格" name="/table"></el-tab-pane>
           <el-tab-pane label="编辑表格" name="/edittable"></el-tab-pane>
